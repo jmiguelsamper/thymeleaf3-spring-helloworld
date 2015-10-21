@@ -9,4 +9,4 @@ Hello World example using
 with Spring Java config.
 
 The easiest way to build and run the application using Maven is to execute `mvn tomcat7:run` and
-point your browser to http://localhost:8080/thymeleaf3-spring-helloworld
+point your browser to (http://localhost:8080/thymeleaf3-spring-helloworld)
