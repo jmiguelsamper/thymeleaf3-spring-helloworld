@@ -1,5 +1,7 @@
 package com.thymeleafexamples.thymeleaf3.config;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +21,15 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.thymeleafexamples")
-public class ThymeleafConfig extends WebMvcConfigurerAdapter {
+public class ThymeleafConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private static final String UTF8 = "UTF-8";
+
+    private ApplicationContext applicationContext;
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Bean
     public ViewResolver viewResolver() {
@@ -33,12 +41,13 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter {
 
     private TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.addTemplateResolver(templateResolver());
+        engine.setTemplateResolver(templateResolver());
         return engine;
     }
 
     private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("/WEB-INF/templates/");
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
